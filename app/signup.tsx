@@ -6,7 +6,7 @@ import { CustomView } from "@/components/customView";
 import { CustomText } from "@/components/customText";
 import { CustomTouchableOpacity } from "@/components/customTouchableOpacity";
 import { router } from "expo-router";
-import { createUser } from "@/api/api"; // Adjust the import path as necessary
+import { createUser } from "@/api/api";
 import { UserResponse } from "./types/user";
 
 export default function LoginScreen() {
@@ -48,28 +48,17 @@ export default function LoginScreen() {
 
     return true;
   };
-
   const handleSignUp = async () => {
     if (!validateForm()) return;
     setLoading(true);
-    try {
-      const userData = {
-        name,
-        email,
-        password,
-      };
-      const response: UserResponse = await createUser(userData);
 
-      if (response) {
-        router.push("/emailAuth");
-      } else {
-        setError(response || "Failed to create account");
-      }
-    } catch (error) {
-      console.error("Error creating account:", error);
-    } finally {
-      setLoading(false);
-    }
+    const userData = {
+      name,
+      email,
+      password,
+    };
+    const response = await createUser(userData);
+    router.replace("/emailAuth");
   };
 
   return (
