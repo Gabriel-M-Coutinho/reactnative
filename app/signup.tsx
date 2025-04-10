@@ -51,14 +51,21 @@ export default function LoginScreen() {
   const handleSignUp = async () => {
     if (!validateForm()) return;
     setLoading(true);
+    try {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+      const response = await createUser(userData);
+      console.log("API Response:", response);
 
-    const userData = {
-      name,
-      email,
-      password,
-    };
-    const response = await createUser(userData);
-    router.replace("/emailAuth");
+      router.replace("/emailAuth");
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

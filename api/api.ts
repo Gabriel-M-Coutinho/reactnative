@@ -19,29 +19,18 @@ export async function createUser(userData: UserData): Promise<UserResponse> {
       body: JSON.stringify(userData),
     });
 
-    const contentType = response.headers.get('content-type');
-
+    const data = await response.json();
 
     if (!response.ok) {
 
-      let errorMessage = `Request failed with status ${response.status}`;
-      if (contentType && contentType.includes('application/json')) {
-        const errorData = await response.json();
-        errorMessage = errorData.message || errorMessage;
-      } else {
-        const errorText = await response.text();
-        errorMessage = errorText || errorMessage;
-      }
+      const errorMessage = data.detail || `Request failed with status ${response.status}`;
       throw new Error(errorMessage);
     }
 
-
-    const data: UserResponse = await response.json();
-    console.log('User created successfully!', data);
     return data;
   } catch (error) {
-    console.error('Error creating user:', error);
-    throw error;
+    console.error("Error in createUser:", error);
+    throw error; 
   }
 }
 export async function verifyUser(code: string): Promise<VerifiedUserResponse> {
