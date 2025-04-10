@@ -5,19 +5,11 @@ import {
     VerifiedUserResponse,
     AuthCheckResponse
 } from '@/app/types/user';
-import { Platform } from 'react-native';
 
 
-const DEV_SERVER_IP = '192.168.1.112'; 
-const API_URL = Platform.OS === 'web'
-  ? 'http://localhost:8000/user'
-  : `[http://${DEV_SERVER_IP}](http://${DEV_SERVER_IP}):8000/user`;
+const API_URL = "http://127.0.0.1:8000/user";
 
     export async function createUser(userData: UserData): Promise<UserResponse> {
-      console.log('Creating user on Android...');
-      console.log('API_URL:', API_URL);
-      console.log('userData:', userData);
-    
       try {
         const response = await fetch(API_URL + "/", {
           method: 'POST',
@@ -38,8 +30,8 @@ const API_URL = Platform.OS === 'web'
         const data: UserResponse = await response.json();
         console.log('User created successfully!');
         return data;
-      } catch (error: any) {
-        console.error('Error creating user:', error.message);
+      } catch (error) {
+        console.error('Error creating user:', error);
         throw error;
       }
     }
